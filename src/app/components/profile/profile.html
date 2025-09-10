@@ -1,1 +1,148 @@
-<p>profile works!</p>
+<div class="profile-container" *ngIf="currentUser">
+  <div class="profile-header">
+    <h1 class="page-title">
+      <mat-icon>person</mat-icon>
+      My Profile
+    </h1>
+  </div>
+
+  <div class="profile-content">
+    <!-- Main Profile Card -->
+    <div class="profile-main">
+      <mat-card class="profile-card">
+        <mat-card-content>
+          <div class="profile-info">
+            <div class="profile-image">
+              <img 
+                *ngIf="currentUser.profileImage" 
+                [src]="currentUser.profileImage" 
+                [alt]="currentUser.fullName">
+              <div *ngIf="!currentUser.profileImage" class="image-placeholder">
+                <mat-icon>account_circle</mat-icon>
+              </div>
+            </div>
+            
+            <div class="profile-details">
+              <h2 class="name">{{ currentUser.fullName }}</h2>
+              <p class="title">{{ currentUser.title }}</p>
+              <p class="location">
+                <mat-icon>location_on</mat-icon>
+                {{ currentUser.location }}
+              </p>
+              
+              <div class="profile-actions">
+                <button mat-raised-button color="primary" (click)="editProfile()">
+                  <mat-icon>edit</mat-icon>
+                  Edit Profile
+                </button>
+                <button mat-button (click)="downloadResume()">
+                  <mat-icon>download</mat-icon>
+                  Download Resume
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Profile Details Grid -->
+    <div class="profile-grid">
+      <!-- About Section -->
+      <mat-card class="about-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>info</mat-icon>
+            About Me
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="bio">{{ currentUser.bio }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Contact Information -->
+      <mat-card class="contact-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>contact_mail</mat-icon>
+            Contact Information
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="contact-item">
+            <mat-icon color="primary">email</mat-icon>
+            <div class="contact-info">
+              <div class="contact-label">Email</div>
+              <div class="contact-value">{{ currentUser.email }}</div>
+            </div>
+          </div>
+          
+          <div class="contact-item" *ngIf="currentUser.phone">
+            <mat-icon color="primary">phone</mat-icon>
+            <div class="contact-info">
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">{{ currentUser.phone }}</div>
+            </div>
+          </div>
+          
+          <div class="contact-item" *ngIf="currentUser.website">
+            <mat-icon color="primary">language</mat-icon>
+            <div class="contact-info">
+              <div class="contact-label">Website</div>
+              <div class="contact-value">
+                <a [href]="currentUser.website" target="_blank">{{ currentUser.website }}</a>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Skills Section -->
+      <mat-card class="skills-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>code</mat-icon>
+            Technical Skills
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="skills-list">
+            <mat-chip-set>
+              <mat-chip *ngFor="let skill of currentUser.skills" class="skill-chip">
+                {{ skill }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Social Links -->
+      <mat-card class="social-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>share</mat-icon>
+            Social Links
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="social-links">
+            <div 
+              *ngFor="let link of currentUser.socialLinks" 
+              class="social-link"
+              (click)="openSocialLink(link.url)">
+              <mat-icon>{{ link.icon.replace('fab fa-', '') }}</mat-icon>
+              <span>{{ link.platform }}</span>
+              <mat-icon class="external-link">open_in_new</mat-icon>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!currentUser" class="loading-state">
+  <mat-icon>account_circle</mat-icon>
+  <p>Loading profile...</p>
+</div>

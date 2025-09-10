@@ -1,1 +1,113 @@
-<p>projects works!</p>
+<div class="projects-container">
+  <div class="projects-header">
+    <h1 class="page-title">
+      <mat-icon>work</mat-icon>
+      My Projects
+    </h1>
+    <p class="page-subtitle">A showcase of my work, from web applications to mobile apps and everything in between.</p>
+  </div>
+
+  <!-- Category Filters -->
+  <div class="filters-section">
+    <mat-tab-group 
+      (selectedTabChange)="filterByCategory($event.index === 0 ? 'all' : categories[$event.index - 1].id)"
+      class="category-tabs">
+      <mat-tab label="All Projects">
+        <ng-template mat-tab-label>
+          <mat-icon>apps</mat-icon>
+          All Projects
+        </ng-template>
+      </mat-tab>
+      <mat-tab *ngFor="let category of categories" [label]="category.name">
+        <ng-template mat-tab-label>
+          <mat-icon>{{ category.icon }}</mat-icon>
+          {{ category.name }}
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="projects-grid">
+    <mat-card *ngFor="let project of filteredProjects" class="project-card">
+      <!-- Project Image/Placeholder -->
+      <div class="project-image">
+        <img 
+          *ngIf="project.imageUrl" 
+          [src]="project.imageUrl" 
+          [alt]="project.title"
+          loading="lazy">
+        <div *ngIf="!project.imageUrl" class="image-placeholder">
+          <mat-icon>code</mat-icon>
+        </div>
+      </div>
+
+      <mat-card-header>
+        <div class="project-status">
+          <mat-icon [style.color]="getStatusColor(project.status)">
+            {{ getStatusIcon(project.status) }}
+          </mat-icon>
+          <span class="status-text" [style.color]="getStatusColor(project.status)">
+            {{ project.status | titlecase }}
+          </span>
+        </div>
+        
+        <mat-card-title>{{ project.title }}</mat-card-title>
+        <mat-card-subtitle>{{ project.shortDescription }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="project-description">{{ project.description }}</p>
+        
+        <div class="project-meta">
+          <div class="project-dates">
+            <mat-icon>date_range</mat-icon>
+            <span>
+              {{ formatDate(project.startDate) }} - 
+              {{ project.endDate ? formatDate(project.endDate) : 'Present' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="technologies">
+          <mat-chip-set>
+            <mat-chip *ngFor="let tech of project.technologies" class="tech-chip">
+              {{ tech }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="project-actions">
+        <button 
+          *ngIf="project.projectUrl"
+          mat-raised-button 
+          color="primary" 
+          (click)="openProject(project.projectUrl)">
+          <mat-icon>launch</mat-icon>
+          Live Demo
+        </button>
+        
+        <button 
+          *ngIf="project.githubUrl"
+          mat-button 
+          (click)="openGithub(project.githubUrl)">
+          <mat-icon>code</mat-icon>
+          Source Code
+        </button>
+
+        <div class="featured-badge" *ngIf="project.featured">
+          <mat-icon>star</mat-icon>
+          Featured
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredProjects.length === 0" class="empty-state">
+    <mat-icon>work_off</mat-icon>
+    <h3>No Projects Found</h3>
+    <p>No projects match the selected category. Try selecting a different category.</p>
+  </div>
+</div>

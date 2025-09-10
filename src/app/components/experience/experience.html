@@ -1,1 +1,85 @@
-<p>experience works!</p>
+<div class="experience-container">
+  <div class="experience-header">
+    <h1 class="page-title">
+      <mat-icon>business_center</mat-icon>
+      Professional Experience
+    </h1>
+    <p class="page-subtitle">My professional journey and career milestones.</p>
+  </div>
+
+  <div class="timeline">
+    <div *ngFor="let experience of experiences; let i = index" class="timeline-item">
+      <div class="timeline-marker">
+        <div class="marker-dot" [class.current]="experience.current">
+          <mat-icon *ngIf="experience.current">work</mat-icon>
+          <mat-icon *ngIf="!experience.current">business</mat-icon>
+        </div>
+        <div class="timeline-line" *ngIf="i < experiences.length - 1"></div>
+      </div>
+
+      <mat-card class="experience-card">
+        <mat-card-header>
+          <div class="company-logo" *ngIf="experience.companyLogo">
+            <img [src]="experience.companyLogo" [alt]="experience.company">
+          </div>
+          <div class="company-info">
+            <mat-card-title>{{ experience.position }}</mat-card-title>
+            <mat-card-subtitle class="company-name">
+              <span>{{ experience.company }}</span>
+              <mat-icon>location_on</mat-icon>
+              <span>{{ experience.location }}</span>
+            </mat-card-subtitle>
+          </div>
+          <div class="experience-status">
+            <span class="status-badge" [class.current]="experience.current">
+              {{ experience.current ? 'Current Position' : 'Former Position' }}
+            </span>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="experience-details">
+            <div class="duration-info">
+              <mat-icon>schedule</mat-icon>
+              <span class="duration">
+                {{ formatDate(experience.startDate) }} - 
+                {{ experience.current ? 'Present' : formatDate(experience.endDate!) }}
+              </span>
+              <span class="total-duration">
+                ({{ getDuration(experience.startDate, experience.endDate) }})
+              </span>
+            </div>
+
+            <p class="description">{{ experience.description }}</p>
+
+            <div class="achievements" *ngIf="experience.achievements.length > 0">
+              <h4>Key Achievements:</h4>
+              <ul>
+                <li *ngFor="let achievement of experience.achievements">
+                  <mat-icon>check_circle</mat-icon>
+                  {{ achievement }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="technologies" *ngIf="experience.technologies.length > 0">
+              <h4>Technologies Used:</h4>
+              <mat-chip-set>
+                <mat-chip *ngFor="let tech of experience.technologies" class="tech-chip">
+                  {{ tech }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="experiences.length === 0" class="empty-state">
+    <mat-icon>work_off</mat-icon>
+    <h3>No Experience Data</h3>
+    <p>Experience information is being loaded or not available.</p>
+  </div>
+</div>
