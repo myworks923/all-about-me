@@ -1,0 +1,113 @@
+<div class="profile-container" *ngIf="currentUser">
+  <header class="page-header">
+    <h1>Professional Profile</h1>
+    <p>Personal information and professional overview</p>
+  </header>
+
+  <div class="profile-content">
+    <div class="profile-main">
+      <mat-card class="profile-card">
+        <mat-card-header>
+          <div mat-card-avatar class="profile-avatar">
+            <img [src]="currentUser.profilePhoto || 'assets/images/default-avatar.png'" 
+                 [alt]="currentUser.firstName + ' ' + currentUser.lastName" />
+          </div>
+          <mat-card-title>{{ currentUser.firstName }} {{ currentUser.lastName }}</mat-card-title>
+          <mat-card-subtitle>Full-Stack Developer</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="bio-section">
+            <h3>
+              <mat-icon>info</mat-icon>
+              About Me
+            </h3>
+            <p>{{ currentUser.bio }}</p>
+          </div>
+
+          <div class="skills-section">
+            <h3>
+              <mat-icon>code</mat-icon>
+              Skills & Technologies
+            </h3>
+            <mat-chip-set>
+              <mat-chip *ngFor="let skill of currentUser.skills" class="skill-chip">
+                {{ skill }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="profile-sidebar">
+      <mat-card class="contact-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>contact_phone</mat-icon>
+            Contact Information
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="contact-item">
+            <mat-icon>email</mat-icon>
+            <span>{{ currentUser.contactInfo.email }}</span>
+          </div>
+          <div class="contact-item" *ngIf="currentUser.contactInfo.phone">
+            <mat-icon>phone</mat-icon>
+            <span>{{ currentUser.contactInfo.phone }}</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ currentUser.contactInfo.location }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="social-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>share</mat-icon>
+            Social Media
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="social-links">
+            <button 
+              mat-raised-button 
+              color="primary" 
+              *ngIf="currentUser.socialMedia.github"
+              (click)="openSocialLink(currentUser.socialMedia.github)">
+              <mat-icon>code</mat-icon>
+              GitHub
+            </button>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              *ngIf="currentUser.socialMedia.linkedin"
+              (click)="openSocialLink(currentUser.socialMedia.linkedin)">
+              <mat-icon>business</mat-icon>
+              LinkedIn
+            </button>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              *ngIf="currentUser.socialMedia.twitter"
+              (click)="openSocialLink(currentUser.socialMedia.twitter)">
+              <mat-icon>alternate_email</mat-icon>
+              Twitter
+            </button>
+            <button 
+              mat-raised-button 
+              color="accent" 
+              *ngIf="currentUser.socialMedia.website"
+              (click)="openSocialLink(currentUser.socialMedia.website)">
+              <mat-icon>public</mat-icon>
+              Website
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
