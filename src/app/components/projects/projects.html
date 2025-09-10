@@ -1,0 +1,93 @@
+<div class="projects-container">
+  <header class="page-header">
+    <h1>Project Portfolio</h1>
+    <p>Showcase of my development projects and technical achievements</p>
+  </header>
+
+  <div class="filters-section">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search projects</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search by title, description, or technology">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="category-field">
+      <mat-label>Category</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="projects-grid" *ngIf="filteredProjects.length > 0">
+    <mat-card *ngFor="let project of filteredProjects" class="project-card">
+      <div class="project-image" *ngIf="project.image">
+        <img [src]="project.image" [alt]="project.title" />
+      </div>
+      
+      <mat-card-header>
+        <div class="project-status">
+          <mat-icon [color]="getStatusColor(project.status)">{{ getStatusIcon(project.status) }}</mat-icon>
+          <span class="status-text">{{ project.status | titlecase }}</span>
+        </div>
+        <mat-card-title>{{ project.title }}</mat-card-title>
+        <mat-card-subtitle>{{ project.category }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="project-description">{{ project.description }}</p>
+        
+        <div class="project-dates">
+          <mat-icon>calendar_today</mat-icon>
+          <span>
+            {{ project.startDate | date:'MMM yyyy' }}
+            <span *ngIf="project.endDate"> - {{ project.endDate | date:'MMM yyyy' }}</span>
+            <span *ngIf="!project.endDate && project.status === 'in-progress'"> - Present</span>
+          </span>
+        </div>
+
+        <div class="technologies">
+          <mat-chip-set>
+            <mat-chip *ngFor="let tech of project.technologies" class="tech-chip">
+              {{ tech }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <div class="highlights" *ngIf="project.highlights.length > 0">
+          <h4>Key Features:</h4>
+          <ul>
+            <li *ngFor="let highlight of project.highlights">{{ highlight }}</li>
+          </ul>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          *ngIf="project.githubUrl"
+          (click)="openLink(project.githubUrl)">
+          <mat-icon>code</mat-icon>
+          View Code
+        </button>
+        <button 
+          mat-raised-button 
+          color="accent" 
+          *ngIf="project.liveUrl"
+          (click)="openLink(project.liveUrl)">
+          <mat-icon>launch</mat-icon>
+          Live Demo
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="no-projects" *ngIf="filteredProjects.length === 0">
+    <mat-icon>search_off</mat-icon>
+    <h3>No projects found</h3>
+    <p>Try adjusting your search criteria or category filter.</p>
+  </div>
+</div>

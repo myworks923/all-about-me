@@ -1,0 +1,65 @@
+<div class="home-container">
+  <header class="welcome-header">
+    <h1>Welcome to Your Portfolio Dashboard</h1>
+    <p *ngIf="currentUser">Hello, {{ currentUser.firstName }} {{ currentUser.lastName }}!</p>
+    <p class="subtitle">Manage your professional portfolio and showcase your work</p>
+    <button mat-stroked-button color="warn" (click)="logout()" class="logout-button">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </header>
+
+  <div class="navigation-grid">
+    <mat-grid-list cols="2" rowHeight="200px" gutterSize="16px">
+      <mat-grid-tile *ngFor="let card of navigationCards">
+        <mat-card class="nav-card" [class]="'nav-card-' + card.color" (click)="navigateToSection(card.route)">
+          <mat-card-header>
+            <div mat-card-avatar>
+              <mat-icon [class]="'icon-' + card.color">{{ card.icon }}</mat-icon>
+            </div>
+            <mat-card-title>{{ card.title }}</mat-card-title>
+            <mat-card-subtitle>{{ card.description }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions>
+            <button mat-raised-button [color]="card.color">
+              View {{ card.title }}
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <div class="stats-section">
+    <mat-card class="stats-card">
+      <mat-card-header>
+        <mat-card-title>Portfolio Overview</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <mat-icon>work</mat-icon>
+            <span class="stat-number">4</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>timeline</mat-icon>
+            <span class="stat-number">3</span>
+            <span class="stat-label">Work Experiences</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>school</mat-icon>
+            <span class="stat-number">5</span>
+            <span class="stat-label">Certifications</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>code</mat-icon>
+            <span class="stat-number">{{ currentUser?.skills?.length || 0 }}</span>
+            <span class="stat-label">Skills</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
