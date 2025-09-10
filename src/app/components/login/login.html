@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-wrapper">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <mat-card-title class="login-title">
+          <mat-icon>account_circle</mat-icon>
+          Welcome to Portfolio
+        </mat-card-title>
+        <mat-card-subtitle>Please sign in to continue</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Enter your email">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              {{ getErrorMessage('email') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Enter your password">
+            <mat-icon matPrefix>lock</mat-icon>
+            <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              {{ getErrorMessage('password') }}
+            </mat-error>
+          </mat-form-field>
+
+          <div class="error-message" *ngIf="error">
+            <mat-icon color="warn">error</mat-icon>
+            {{ error }}
+          </div>
+
+          <div class="login-actions">
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              [disabled]="loginForm.invalid || loading"
+              class="login-button">
+              <mat-spinner *ngIf="loading" diameter="20" class="spinner"></mat-spinner>
+              <span *ngIf="!loading">Sign In</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="demo-credentials">
+          <div class="demo-title">Demo Credentials:</div>
+          <div class="demo-info">
+            <strong>Email:</strong> admin@portfolio.com<br>
+            <strong>Password:</strong> password
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

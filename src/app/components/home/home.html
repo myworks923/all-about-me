@@ -1,0 +1,114 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="welcome-message">
+        <h1 class="hero-title">
+          Welcome back, {{ currentUser?.firstName || 'User' }}!
+        </h1>
+        <p class="hero-subtitle">{{ currentUser?.title }}</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">{{ featuredProjects.length }}</div>
+          <div class="stat-label">Featured Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ currentUser?.skills?.length || 0 }}</div>
+          <div class="stat-label">Skills</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Navigation -->
+  <section class="navigation-section">
+    <h2 class="section-title">Quick Navigation</h2>
+    <div class="navigation-grid">
+      <mat-card 
+        *ngFor="let card of navigationCards" 
+        class="nav-card"
+        [style.border-left]="'4px solid ' + card.color">
+        <mat-card-header>
+          <div mat-card-avatar [style.background-color]="card.color">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <mat-card-title>{{ card.title }}</mat-card-title>
+          <mat-card-subtitle>{{ card.description }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button 
+            mat-raised-button 
+            [routerLink]="card.route" 
+            [style.background-color]="card.color"
+            color="primary">
+            <mat-icon>arrow_forward</mat-icon>
+            View
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Featured Projects Preview -->
+  <section class="featured-projects" *ngIf="featuredProjects.length > 0">
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+      <mat-card *ngFor="let project of featuredProjects" class="project-card">
+        <mat-card-header>
+          <mat-card-title>{{ project.title }}</mat-card-title>
+          <mat-card-subtitle>{{ project.shortDescription }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="project-technologies">
+            <span 
+              *ngFor="let tech of project.technologies" 
+              class="tech-chip">
+              {{ tech }}
+            </span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button [routerLink]="['/projects']">
+            <mat-icon>visibility</mat-icon>
+            View All Projects
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Recent Activity -->
+  <section class="recent-activity">
+    <h2 class="section-title">Recent Activity</h2>
+    <mat-card class="activity-card">
+      <mat-card-content>
+        <div class="activity-item">
+          <mat-icon color="primary">check_circle</mat-icon>
+          <div class="activity-content">
+            <div class="activity-title">Profile Updated</div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <mat-icon color="accent">add</mat-icon>
+          <div class="activity-content">
+            <div class="activity-title">New project added</div>
+            <div class="activity-time">1 day ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <mat-icon color="warn">verified</mat-icon>
+          <div class="activity-content">
+            <div class="activity-title">Certification earned</div>
+            <div class="activity-time">3 days ago</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>
